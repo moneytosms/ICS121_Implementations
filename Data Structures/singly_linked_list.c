@@ -124,6 +124,21 @@ void destroy_list(List* list) {
     free(list);
 }
 
+void reverse_list(List* list){
+    Node* curr= list->head;
+    Node*prev=NULL;
+    Node*next = NULL;
+
+    while(curr){
+        next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=next;
+    }
+    list->head=prev;
+
+}
+
 int main() {
     int choice, index, value;
     List* list = NULL;
