@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "linear_queue.h"
+
 
 typedef struct Node
 {
@@ -63,6 +63,51 @@ void build_graph(Node *adj[], int n)
     }
 }
 
+typedef struct Queue
+{
+    int *items;
+    int front, rear, size, capacity;
+} Queue;
+
+void create_queue(Queue *queue, int capacity)
+{
+    queue->items = (int *)malloc(capacity * sizeof(int));
+    queue->front = 0;
+    queue->rear = -1;
+    queue->size = 0;
+    queue->capacity = capacity;
+}
+
+int isEmpty(Queue *queue)
+{
+    return queue->size == 0;
+}
+
+void enqueue(Queue *queue, int value)
+{
+    if (queue->size == queue->capacity)
+    {
+        printf("Queue overflow\n");
+        return;
+    }
+    queue->rear = (queue->rear + 1) % queue->capacity;
+    queue->items[queue->rear] = value;
+    queue->size++;
+}
+
+int dequeue(Queue *queue)
+{
+    if (isEmpty(queue))
+    {
+        printf("Queue underflow\n");
+        exit(1);
+    }
+    int value = queue->items[queue->front];
+    queue->front = (queue->front + 1) % queue->capacity;
+    queue->size--;
+    return value;
+}
+
 void bfs(Node *adj[], int n, int start)
 {
     int visited[n];
@@ -72,7 +117,7 @@ void bfs(Node *adj[], int n, int start)
     }
 
     Queue queue;
-    create_queue(&queue);
+    create_queue(&queue, n);
 
     printf("BFS starting from vertex %d: ", start);
     visited[start] = 1;

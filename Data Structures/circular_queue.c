@@ -20,12 +20,12 @@ CQueue *create_queue()
 
 int is_empty(CQueue *queue)
 {
-    return queue->size == 0;
+    return queue->front == -1;
 }
 
 int is_full(CQueue *queue)
 {
-    return queue->size == MAX;
+    return (queue->rear + 1) % MAX == queue->front;
 }
 
 void enqueue(CQueue *queue, int data)
